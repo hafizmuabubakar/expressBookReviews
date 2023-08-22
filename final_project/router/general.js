@@ -40,7 +40,7 @@ public_users.get('/',function (req, res) {
   //Write your code here
   const booksData = JSON.stringify(books);
   console.log('Books Data', booksData);
-  return res.status(300).json({message: "Books Data", data: booksData});
+  return res.status(300).json({message: "Books Data", data: books});
 });
 
 // Get the book list available in the shop using promise
@@ -71,11 +71,22 @@ public_users.get('/getallbooks',function (req, res) {
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {
   //Write your code here
-  const isbn = req.params.ISBN;
+  const isbn = req.params.isbn;
   console.log('ISBN Data', isbn);
 
-  let filtered_books = books.filter((book) => book.ISBN === isbn);
-  return res.status(300).json({message: "Book Details by ISBN", data: filtered_books});
+  let newBookDetails = [] ;
+
+  for (const key in books) {
+    if (books.hasOwnProperty(key)) {
+      const book = books[key];
+      if (key === isbn) {
+        newBookDetails.push(book);
+      }
+    }
+  }
+
+  // console.log('New Filtered Data', newBookDetails);
+  return res.status(300).json({message: "Found Books by Author", data: newBookDetails});
  });
 
  // Get the book details based on ISBN using Promise

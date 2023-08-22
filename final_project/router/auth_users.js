@@ -36,16 +36,18 @@ regd_users.post("/login", (req,res) => {
       req.session.authorization = {
         accessToken,username
     }
-    return res.status(200).send("Log In Successful");
+    return res.status(200).json({message: "Login Successful", data: accessToken});
     } else {
-      return res.status(208).json({message: "Invalid Credentials. Check username and password"});
+      return res.status(401).json({message: "Invalid Credentials. Check username and password"});
     }
 });
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   const  review  = req.query.review;
+  console.log(review)
   const isbn = req.params.isbn
+  let username ;
   if(req.session.authorization) {
     token = req.session.authorization['accessToken'];
     jwt.verify(token, "access",(err,user)=>{
